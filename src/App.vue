@@ -19,7 +19,7 @@
       </el-container>
     </el-container>
     <div class="footer">
-      此站点所有权归作者(XDEcat~)所有
+      此站点的所有权归作者(XDEcat~)所有
       <span>
         邮箱:492697494@qq.com
       </span>
