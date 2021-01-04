@@ -19,7 +19,7 @@
       </el-container>
     </el-container>
     <div class="footer">
-      网站版权归作者所有
+      此站点所有权归作者(XDEcat~)所有
       <span>
         邮箱:492697494@qq.com
       </span>
@@ -60,6 +60,7 @@ html,body{
   width: 100%;
   bottom: 0;
   text-align: center;
+  cursor: pointer;
   background-color: #2c3e50;
 }
 .footer > span{

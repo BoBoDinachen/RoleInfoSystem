@@ -9,7 +9,7 @@
       :collapse="isCollapse"
       active-text-color="#ffd04b"
       :collapse-transition="true"
-      :style="{height: currentHeight+'px'}"
+      :style="{height: BarHeight+'px'}"
     >
       <el-submenu index="1">
         <template slot="title">
@@ -86,13 +86,26 @@ export default {
     return {
       isShow: false,
       isCollapse: false,
-      currentHeight: "",
+      BarHeight: "",
+      appHeight: ""
     };
+  },
+  // 监听app盒子的高度
+  watch:{
+    appHeight(newHeight,oldHeight){
+      console.log("变化");
+      this.BarHeight = newHeight - 86;
+    }
   },
   mounted() {
     //获取app盒子的高度
     let app = document.getElementById("app");
-    this.currentHeight = app.offsetHeight - 86;
+    this.BarHeight = app.offsetHeight - 86;
+    window.onresize =()=>{
+      return (() => {
+       this.appHeight = document.getElementById("app").offsetHeight;
+    })()
+    }
     // 设置sidebar的高度
     // let menu = document.querySelector(".el-menu");
     // console.log(menu);
