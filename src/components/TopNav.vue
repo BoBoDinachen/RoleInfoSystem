@@ -143,6 +143,7 @@
           ></el-input>
         </el-form-item>
       </el-form>
+      <el-link type="success" @click="toggleDialogForm" style="position: absolute;margin-left:15px">去登录账号</el-link>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitRegForm('registerForm')"
           >注册</el-button
@@ -299,8 +300,8 @@ export default {
     // 切换注册窗口
     toggleDialogForm() {
       //
-      this.dialogFormVisible = false;
-      this.dialogFormVisible2 = true;
+      this.dialogFormVisible = !this.dialogFormVisible;
+      this.dialogFormVisible2 = !this.dialogFormVisible2;
     },
     // 注册
     submitRegForm(formName) {
