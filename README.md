@@ -1,7 +1,7 @@
 # roleinfo-manager-system
 
 ## 简介
-> 这是一个用了前端框架Vue以及Element-ui的实训项目,仅练习用
+> 这是一个用了前端框架Vue以及Element-ui的学生实训项目,仅练习用
 
 
 ### 使用
