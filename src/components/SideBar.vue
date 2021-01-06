@@ -93,7 +93,6 @@ export default {
   // 监听app盒子的高度
   watch:{
     appHeight(newHeight,oldHeight){
-      console.log("变化");
       this.BarHeight = newHeight - 86;
     }
   },
