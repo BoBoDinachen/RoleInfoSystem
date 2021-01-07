@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-row>
+    <el-row :class="isNight ? 'switch-background2' : 'switch-background1'">
       <el-col :span="3">
         <!-- log -->
         <span class="log"></span>
         <span class="title">式神录</span>
       </el-col>
-      <el-col :span="10" :offset="3">
+      <el-col :span="7" :offset="3">
         <el-input
           placeholder="请输入式神名字"
           v-model="inputValue"
@@ -26,6 +26,20 @@
         </el-input>
       </el-col>
       <el-col :span="3" :offset="5">
+        <div style="height:60px">
+          <span style="float:left;display:inline-block;line-height:60px;font-size:14px;font-weight:bold">黑夜模式</span>
+          <el-switch
+          style="margin-top:10%;margin-left:-10%"
+          :width="45"
+          v-model="isNight"
+          inactive-icon-class="el-icon-sunrise"
+          active-icon-class="el-icon-moon-night"
+          active-color="#606266"
+          >
+          </el-switch>
+        </div>
+      </el-col>
+      <el-col :span="3" >
         <span
           class="userlogin"
           v-if="!isLogin"
@@ -35,7 +49,25 @@
         <span class="username" v-if="isLogin" :text="username">{{
           username
         }}</span>
-        <el-avatar shape="square" :size="50" :src="squareUrl"></el-avatar>
+        <el-popover
+          placement="top-start"
+          width="250"
+          trigger="hover"
+        >
+          <div style='font-size:25px;font-weight: bold;font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;'>{{isLogin ? username : "未登录"}}</div>
+          <ul class="popover-card">
+            <li>个人资料</li>
+            <li>设置</li>
+          </ul>
+          <el-button v-show="!isLogin" @click="dialogFormVisible = true" style="margin-top:10px;float:left" size="small" type="success" round>登录</el-button>
+          <el-button v-show="isLogin" @click="LogOut" style="margin-top:5px;float:right" size="small" type="danger" round>Logout</el-button>
+          <el-avatar
+            slot="reference"
+            shape="circle"
+            :size="50"
+            :src="squareUrl"
+          ></el-avatar>
+        </el-popover>
       </el-col>
     </el-row>
     <!-- 登录与注册框 -->
@@ -217,15 +249,30 @@ export default {
       if (!value) {
         return callback(new Error("必须输入用户名!"));
       }
-      setTimeout(() => {
-        let regUserName = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/;
-        if (!regUserName.test(value)) {
-          callback(new Error("用户名必须是中文、英文、数字包括下划线！"));
-        } else {
-          // 用户名查重
-          callback();
-        }
-      }, 500);
+      let regUserName = /^[\u4E00-\u9FA5A-Za-z0-9_]+$/;
+      if (!regUserName.test(value)) {
+        callback(new Error("用户名必须是中文、英文、数字包括下划线！"));
+      } else {
+        // 用户名查重
+        UserAPI.checkRepeat({
+          param: value,
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.data.content.isRepeat) {
+              // 用户名重复
+              this.$message({
+                message: "用户名已重复,请重新填写~",
+                type: "warning",
+              });
+            } else {
+              callback();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     };
     let checkEmail = (rule, value, callback) => {
       if (!value) {
@@ -235,7 +282,25 @@ export default {
       if (!regEmail.test(value)) {
         callback(new Error("请输入正确邮箱！"));
       } else {
-        callback();
+        // 邮箱查重
+        UserAPI.checkRepeat({
+          param: value,
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.data.content.isRepeat) {
+              // 用户名重复
+              this.$message({
+                message: "邮箱已被使用,请重新填写~",
+                type: "warning",
+              });
+            } else {
+              callback();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     };
     let checkTel = (rule, value, callback) => {
@@ -247,7 +312,25 @@ export default {
       if (!regTel.test(value)) {
         callback(new Error("电话格式错误~"));
       } else {
-        callback();
+        // 手机号查重
+        UserAPI.checkRepeat({
+          param: value,
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.data.content.isRepeat) {
+              // 用户名重复
+              this.$message({
+                message: "手机号已被使用,请重新填写~",
+                type: "warning",
+              });
+            } else {
+              callback();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     };
     let checkAge = (rule, value, callback) => {
@@ -266,7 +349,7 @@ export default {
     };
     let checkSex = (rule, value, callback) => {
       if (!value) {
-         callback(new Error("请选择性别~"));
+        callback(new Error("请选择性别~"));
       }
       callback();
     };
@@ -300,10 +383,12 @@ export default {
       isLogin: false,
       squareUrl: require("../assets/top/head.png"),
       // 用户名
-      username: "XDEcat",
+      username: "",
       // 输入框
       inputValue: "",
       selectValue: "",
+      // 是否黑夜
+      isNight: false,
       // 显示弹出框
       dialogFormVisible: false,
       dialogFormVisible2: false,
@@ -329,7 +414,7 @@ export default {
             validator: checkAccount,
             trigger: "blur",
           },
-        ]
+        ],
       },
       rules2: {
         username: [{ validator: checkName, trigger: "blur" }],
@@ -352,6 +437,12 @@ export default {
   computed: {},
   // 监听数据的变化
   watch: {
+    squareUrl(newValue,oldValue){
+      this.squareUrl = newValue;
+    },
+    isLogin(newValue,oldValue){
+      this.isLogin = newValue;
+    },
     dialogFormVisible(newValue, oldValue) {
       // 重新设置验证码
       // console.log("变化");
@@ -361,7 +452,14 @@ export default {
   },
   // 初始化
   created() {
-    // 发送请求
+    // 检查本地是否存在用户信息和token
+    let userToken = localStorage["userToken"];
+    let userInfo = localStorage["userInfo"];
+    if (userToken && userInfo) {
+      this.isLogin = true;
+      this.squareUrl = require("../assets/top/user.png");
+      this.username = JSON.parse(userInfo).userName;
+    }
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -397,17 +495,23 @@ export default {
           })
             .then((res) => {
               console.log(res.data);
-              // 保存用户信息和token
-              localStorage["userInfo"] = JSON.stringify(
-                res.data.content.userInfo
-              );
-              localStorage["userToken"] = res.data.content.token;
+              // 登录成功
               if (res.data.code == 200) {
+                // 保存用户信息和token
+                localStorage["userInfo"] = JSON.stringify(
+                  res.data.content.userInfo
+                );
+                localStorage["userToken"] = res.data.content.token;
                 this.$notify({
                   title: "登录成功!",
                   message: "欢迎用户..." + res.data.content.userInfo.userName,
                   type: "success",
+                  offset: 100
                 });
+                // 设置用户名
+                this.username = res.data.content.userInfo.userName;
+                // 设置头像
+                this.squareUrl=require("../assets/top/user.png");
                 this.isLogin = true;
                 this.isLoading = false;
                 this.dialogFormVisible = false; // 隐藏登录框
@@ -422,7 +526,7 @@ export default {
             type: "warning",
           });
           this.isLoading = false;
-        }else{
+        } else {
           this.isLoading = false;
         }
       });
@@ -434,6 +538,14 @@ export default {
       this.isLoading = false;
       this.dialogFormVisible = false;
       console.log(localStorage["userInfo"]);
+    },
+    // 退出登录
+    LogOut(){
+      this.isLogin = false;
+      this.$message("已退出登录");
+      this.squareUrl=require("../assets/top/head.png");
+      console.log(this.isLogin);
+      localStorage.clear();
     },
     // 注册
     submitRegForm(formName) {
@@ -447,21 +559,24 @@ export default {
             tel: this.registerForm.tel,
             age: this.registerForm.age,
             sex: this.registerForm.sex,
-            password: this.registerForm.pass
-          }).then((res)=>{
-            console.log(res.data);
-            if (res.data.content.success) {
-              this.$notify({
-                title: "注册成功!",
-                message: "现在可以登录了~",
-                type: "success"
-              });
-            this.$refs[formName].resetFields();
-            this.isLoading = false;
-            }
-          }).catch((err)=>{
-            console.log(err);
+            password: this.registerForm.pass,
           })
+            .then((res) => {
+              console.log(res.data);
+              if (res.data.content.success) {
+                this.$notify({
+                  title: "注册成功!",
+                  message: "现在可以登录了~",
+                  type: "success",
+                  offset: 100
+                });
+                this.$refs[formName].resetFields();
+                this.isLoading = false;
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           // 验证失败,通知
           this.$message({
@@ -469,13 +584,14 @@ export default {
             message: "请填写正确的信息！",
             type: "warning",
           });
-          // 
+          //
           this.isLoading = false;
         }
       });
     },
     //重置
     resetRegForm(formName) {
+      this.isLoading = false;
       this.$refs[formName].resetFields();
     },
   },
@@ -483,8 +599,14 @@ export default {
 </script>
 
 <style scoped>
+.switch-background1{
+  background-color: lightsalmon;
+}
+.switch-background2{
+  background-color: #2c3e50;
+  color: white;
+}
 .el-row {
-  background-color: palevioletred;
   height: 60px;
 }
 /* log图标 */
@@ -516,9 +638,32 @@ export default {
 /* 头像 */
 .el-avatar {
   float: right;
-  margin-right: 5px;
+  margin-right: 20px;
   margin-top: 5px;
   cursor: pointer;
+}
+.el-avatar:hover {
+  box-shadow: 0 0 12px 10px rgba(0, 0, 0, 0.1);
+}
+/* 卡片框 */
+.popover-card{
+  width: 250px;
+  list-style: none;
+  cursor: default;
+}
+.popover-card li{
+  height: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Times New Roman','sans-serif', 宋体, 楷体;
+  margin-top: 10px;
+  padding-left: 10px;
+  border-radius: 10px;
+  transition: all .2s linear;
+  cursor: pointer;
+}
+.popover-card li:hover{
+  background-color: #EBEEF5;
 }
 /* 用户名 */
 .username {
@@ -526,7 +671,7 @@ export default {
   line-height: 60px;
   border-radius: 30px;
   font-weight: bold;
-  /* transform: translateX(20%); */
+  transform: translateX(40%);
   cursor: pointer;
 }
 .userlogin {

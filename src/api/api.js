@@ -10,6 +10,11 @@ export const UserAPI = {
   register: function (params) { 
     let request = axiosPost("/user/register", params)
     return request;
+  },
+  // 注册信息查重
+  checkRepeat: function (params) { 
+    let request = axiosPost("/user/checkRepeat", params)
+    return request;
   }
 
 }

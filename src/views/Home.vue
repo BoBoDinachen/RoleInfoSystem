@@ -1,6 +1,6 @@
 <template>
   <div>
-    你好
+    <h3>这是主页</h3>
   </div>
 </template>
 
@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style>
-
+h3{
+  text-align: center;
+}
 </style>
