@@ -26,20 +26,29 @@
         </el-input>
       </el-col>
       <el-col :span="3" :offset="5">
-        <div style="height:60px">
-          <span style="float:left;display:inline-block;line-height:60px;font-size:14px;font-weight:bold">黑夜模式</span>
+        <div style="height: 60px">
+          <span
+            style="
+              float: left;
+              display: inline-block;
+              line-height: 60px;
+              font-size: 14px;
+              font-weight: bold;
+            "
+            >黑夜模式</span
+          >
           <el-switch
-          style="margin-top:10%;margin-left:-10%"
-          :width="45"
-          v-model="isNight"
-          inactive-icon-class="el-icon-sunrise"
-          active-icon-class="el-icon-moon-night"
-          active-color="#606266"
+            style="margin-top: 10%; margin-left: -10%"
+            :width="45"
+            v-model="isNight"
+            inactive-icon-class="el-icon-sunrise"
+            active-icon-class="el-icon-moon-night"
+            active-color="#606266"
           >
           </el-switch>
         </div>
       </el-col>
-      <el-col :span="3" >
+      <el-col :span="3">
         <span
           class="userlogin"
           v-if="!isLogin"
@@ -49,18 +58,40 @@
         <span class="username" v-if="isLogin" :text="username">{{
           username
         }}</span>
-        <el-popover
-          placement="top-start"
-          width="250"
-          trigger="hover"
-        >
-          <div style='font-size:25px;font-weight: bold;font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;'>{{isLogin ? username : "未登录"}}</div>
+        <el-popover placement="top-start" width="250" trigger="hover">
+          <div
+            style="
+              font-size: 25px;
+              font-weight: bold;
+              font-family: 'Helvetica Neue', Helvetica, 'PingFang SC',
+                'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial,
+                sans-serif;
+            "
+          >
+            {{ isLogin ? username : "未登录" }}
+          </div>
           <ul class="popover-card">
             <li>个人资料</li>
             <li>设置</li>
           </ul>
-          <el-button v-show="!isLogin" @click="dialogFormVisible = true" style="margin-top:10px;float:left" size="small" type="success" round>登录</el-button>
-          <el-button v-show="isLogin" @click="LogOut" style="margin-top:5px;float:right" size="small" type="danger" round>Logout</el-button>
+          <el-button
+            v-show="!isLogin"
+            @click="dialogFormVisible = true"
+            style="margin-top: 10px; float: left"
+            size="small"
+            type="success"
+            round
+            >登录</el-button
+          >
+          <el-button
+            v-show="isLogin"
+            @click="LogOut"
+            style="margin-top: 5px; float: right"
+            size="small"
+            type="danger"
+            round
+            >退出登录</el-button
+          >
           <el-avatar
             slot="reference"
             shape="circle"
@@ -437,10 +468,15 @@ export default {
   computed: {},
   // 监听数据的变化
   watch: {
-    squareUrl(newValue,oldValue){
+    // 改变黑夜模式
+    isNight(newValue,oldValue){
+      // console.log("改变");
+      this.$store.commit("changeMakeDark");
+    },
+    squareUrl(newValue, oldValue) {
       this.squareUrl = newValue;
     },
-    isLogin(newValue,oldValue){
+    isLogin(newValue, oldValue) {
       this.isLogin = newValue;
     },
     dialogFormVisible(newValue, oldValue) {
@@ -485,8 +521,7 @@ export default {
             type: "warning",
           });
           this.isLoading = false;
-        }
-        if (valid && this.status) {
+        } else if (valid && this.status) {
           console.log(this.status);
           //验证通过，发送请求
           UserAPI.login({
@@ -506,19 +541,30 @@ export default {
                   title: "登录成功!",
                   message: "欢迎用户..." + res.data.content.userInfo.userName,
                   type: "success",
-                  offset: 100
+                  offset: 100,
                 });
                 // 设置用户名
                 this.username = res.data.content.userInfo.userName;
                 // 设置头像
-                this.squareUrl=require("../assets/top/user.png");
+                this.squareUrl = require("../assets/top/user.png");
                 this.isLogin = true;
                 this.isLoading = false;
                 this.dialogFormVisible = false; // 隐藏登录框
+              } else {
+                this.$message({
+                  message: "登录失败,请检查用户名和密码是否正确",
+                  type: "error",
+                });
+                this.isLoading = false;
               }
             })
             .catch((err) => {
               console.log(err);
+              this.isLoading = false;
+              this.$message({
+                message: "登录延时，请重新登录",
+                type: "warning",
+              });
             });
         } else if (this.status == false && valid) {
           this.$message({
@@ -537,15 +583,30 @@ export default {
       this.loginForm.password = "";
       this.isLoading = false;
       this.dialogFormVisible = false;
-      console.log(localStorage["userInfo"]);
     },
     // 退出登录
-    LogOut(){
-      this.isLogin = false;
-      this.$message("已退出登录");
-      this.squareUrl=require("../assets/top/head.png");
-      console.log(this.isLogin);
-      localStorage.clear();
+    LogOut() {
+      this.$confirm("确定要退出登录吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.isLogin = false;
+          this.squareUrl = require("../assets/top/head.png");
+          // console.log(this.isLogin);
+          localStorage.clear(); // 清除本地localStorage
+          this.$message({
+            type: "info",
+            message: "已退出登录",
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
     },
     // 注册
     submitRegForm(formName) {
@@ -568,7 +629,7 @@ export default {
                   title: "注册成功!",
                   message: "现在可以登录了~",
                   type: "success",
-                  offset: 100
+                  offset: 100,
                 });
                 this.$refs[formName].resetFields();
                 this.isLoading = false;
@@ -599,10 +660,10 @@ export default {
 </script>
 
 <style scoped>
-.switch-background1{
+.switch-background1 {
   background-color: lightsalmon;
 }
-.switch-background2{
+.switch-background2 {
   background-color: #2c3e50;
   color: white;
 }
@@ -646,24 +707,24 @@ export default {
   box-shadow: 0 0 12px 10px rgba(0, 0, 0, 0.1);
 }
 /* 卡片框 */
-.popover-card{
+.popover-card {
   width: 250px;
   list-style: none;
   cursor: default;
 }
-.popover-card li{
+.popover-card li {
   height: 30px;
   font-size: 20px;
   font-weight: bold;
-  font-family: 'Times New Roman','sans-serif', 宋体, 楷体;
+  font-family: "Times New Roman", "sans-serif", 宋体, 楷体;
   margin-top: 10px;
   padding-left: 10px;
   border-radius: 10px;
-  transition: all .2s linear;
+  transition: all 0.2s linear;
   cursor: pointer;
 }
-.popover-card li:hover{
-  background-color: #EBEEF5;
+.popover-card li:hover {
+  background-color: #ebeef5;
 }
 /* 用户名 */
 .username {

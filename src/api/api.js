@@ -16,5 +16,11 @@ export const UserAPI = {
     let request = axiosPost("/user/checkRepeat", params)
     return request;
   }
-
+}
+export const RoleAPI = {
+  // 获取所有的式神信息
+  getRolesInfo: function () { 
+    let request = axiosPost("/role/allInfo");
+    return request;
+  }
 }

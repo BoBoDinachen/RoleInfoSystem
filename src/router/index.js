@@ -6,6 +6,8 @@ import RoleInfoView from "../views/RoleInfo"
 import EquipInfoView from "../views/EquipInfo"
 // 主页
 import HomePage from "../views/Home"
+// 错误页
+import Error from "../views/Error"
 Vue.use(VueRouter);
 
 // 重写了原型上的push方法，统一的处理了错误信息,避免重复跳转路由
@@ -26,6 +28,10 @@ const routes = [
   {
     path: "/showEquipInfo",
     component: EquipInfoView
+  },
+  {
+    path: "/error",
+    component: Error
   }
 ];
 

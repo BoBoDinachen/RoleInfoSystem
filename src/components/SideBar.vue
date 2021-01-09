@@ -212,17 +212,20 @@ export default {
   position: absolute;
   transform: translateX(-145%);
   bottom: 50%;
+  z-index: 999;
 }
 .item2 {
   position: absolute;
   margin-left: 80px;
   bottom: 50%;
   transition: all 0.3s linear;
+  z-index: 999;
 }
 .item3 {
   position: absolute;
   margin-left: 5px;
   bottom: 50%;
   transition: all 0.3s linear;
+  z-index: 999;
 }
 </style>

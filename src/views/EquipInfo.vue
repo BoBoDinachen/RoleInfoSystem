@@ -1,5 +1,6 @@
 <template>
   <div>
+    <breadcrumb firstTitle="信息展示" secondTitle="装备信息"/>
     <div id="equip">
       式神装备
     </div>
@@ -7,8 +8,11 @@
 </template>
 
 <script>
+import Breadcrumb from '../components/public/Breadcrumb.vue'
 export default {
-
+  components:{
+    Breadcrumb
+  }
 }
 </script>
 
