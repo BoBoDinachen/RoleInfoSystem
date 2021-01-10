@@ -23,7 +23,7 @@ axios.interceptors.request.use(
 )
 
 // 设置get请求
-export function axiosGet(url, params) {
+export function axiosGet(url) { 
   let newAxios = axios.create({
     timeout: 500,
     headers: { 'Content-Type': 'application/json',"charset":"utf-8","token": localStorage["userToken"] }
@@ -31,9 +31,19 @@ export function axiosGet(url, params) {
   return newAxios({
     url: url,
     method: "get",
-    params: params
   })
 }
+// export function axiosGet(url, params) {
+//   let newAxios = axios.create({
+//     timeout: 500,
+//     headers: { 'Content-Type': 'application/json',"charset":"utf-8","token": localStorage["userToken"] }
+//   });
+//   return newAxios({
+//     url: url,
+//     method: "get",
+//     params: params
+//   })
+// }
 
 // 设置post请求
 export function axiosPost(url,params) { 

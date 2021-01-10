@@ -38,13 +38,13 @@
         </template>
         <el-menu-item-group>
           <template slot="title">管理</template>
-          <el-menu-item index="2-1">
-            <i class="el-icon-full-screen"></i>
-            <span style="font-size: 13px; color: #67c23a">装备管理</span>
-          </el-menu-item>
-          <el-menu-item index="2-2">
+          <el-menu-item index="/roleManagePage">
             <i class="el-icon-full-screen"></i>
             <span style="font-size: 13px; color: #67c23a">式神管理</span>
+          </el-menu-item>
+          <el-menu-item index="/equipManagePage">
+            <i class="el-icon-full-screen"></i>
+            <span style="font-size: 13px; color: #67c23a">装备管理</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
@@ -166,6 +166,20 @@ export default {
             label: "式神装备"
           }
           this.addTabs(data2);
+          break;
+        case "/roleManagePage":
+          let data3 = {
+            title: "<i class='el-icon-present'></i> 式神信息管理",
+            label: "式神信息管理"
+          }
+          this.addTabs(data3);
+          break;
+        case "/equipManagePage":
+          let data4 = {
+            title: "<i class='el-icon-present'></i> 装备信息管理",
+            label: "装备信息管理"
+          }
+          this.addTabs(data4);
           break;
 
       }

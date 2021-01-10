@@ -8,6 +8,9 @@ import EquipInfoView from "../views/EquipInfo"
 import HomePage from "../views/Home"
 // 错误页
 import Error from "../views/Error"
+// 装备管理和式神管理
+import RoleManage from "../views/RoleManage"
+import EquipManage from "../views/EquipManage"
 Vue.use(VueRouter);
 
 // 重写了原型上的push方法，统一的处理了错误信息,避免重复跳转路由
@@ -32,6 +35,15 @@ const routes = [
   {
     path: "/error",
     component: Error
+  },
+  // 式神和装备管理页面
+  {
+    path: "/roleManagePage",
+    component: RoleManage
+  },
+  {
+    path: "/equipManagePage",
+    component: EquipManage
   }
 ];
 

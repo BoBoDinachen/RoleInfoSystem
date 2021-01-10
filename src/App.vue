@@ -166,6 +166,12 @@ export default {
         case "式神装备":
           this.$router.push("/showEquipInfo");
           break;
+        case "式神信息管理":
+          this.$router.push("/roleManagePage");
+          break;
+        case "装备信息管理":
+          this.$router.push("/equipManagePage");
+          break;
       }
     },
     // 跳转到最后一个标签对应的路由
@@ -182,6 +188,12 @@ export default {
           break;
         case "式神装备":
           this.$router.push("/showEquipInfo");
+          break;
+        case "式神信息管理":
+          this.$router.push("/roleManagePage");
+          break;
+        case "装备信息管理":
+          this.$router.push("/equipManagePage");
           break;
       }
     },
