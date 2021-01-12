@@ -22,7 +22,7 @@ const routes = [
   {
     path: '/',
     component: HomePage,
-    name:"home"
+    name: "home"
   },
   {
     path: "/showRoleInfo",

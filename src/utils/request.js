@@ -33,17 +33,6 @@ export function axiosGet(url) {
     method: "get",
   })
 }
-// export function axiosGet(url, params) {
-//   let newAxios = axios.create({
-//     timeout: 500,
-//     headers: { 'Content-Type': 'application/json',"charset":"utf-8","token": localStorage["userToken"] }
-//   });
-//   return newAxios({
-//     url: url,
-//     method: "get",
-//     params: params
-//   })
-// }
 
 // 设置post请求
 export function axiosPost(url,params) { 

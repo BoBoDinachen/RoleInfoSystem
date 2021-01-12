@@ -24,6 +24,8 @@ export const UserAPI = {
 
 // 关于式神信息的
 export const RoleAPI = {
+  // 式神头像的baseURL
+  ImgURL: "http://localhost:9090/",
   // 获取所有的式神信息
   getRolesInfo: function () { 
     let request = axiosGet("/role/allInfo");
@@ -33,6 +35,26 @@ export const RoleAPI = {
   getRolesInfoByType(param) { 
     // restful风格请求
     let request = axiosGet("/role/getInfoByType/"+param);
+    return request;
+  },
+  // 修改式神信息
+  updateRoleInfo(params) {
+    let request = axiosPost("/role/changeRole", params);
+    return request;
+  },
+  // 式神名字查重
+  checkReName(name) { 
+    let request = axiosGet("/role/checkName/" + name);
+    return request;
+  },
+  // 添加式神信息
+  addRoleInfo(params) { 
+    let request = axiosPost("/role/addRole", params);
+    return request;
+  },
+  // 删除式神
+  deleteRoleInfo(name) { 
+    let request = axiosGet("/role/deleteRole/" + name);
     return request;
   }
 }
