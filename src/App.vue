@@ -172,6 +172,15 @@ export default {
         case "装备信息管理":
           this.$router.push("/equipManagePage");
           break;
+        case "个人资料":
+          this.$router.push("/personalData");
+          break;
+        case "修改个人资料":
+          this.$router.push("/updatePersonal");
+          break;
+        case "修改个人密码":
+          this.$router.push("/updatePassword");
+          break;
       }
     },
     // 跳转到最后一个标签对应的路由
@@ -195,6 +204,15 @@ export default {
         case "装备信息管理":
           this.$router.push("/equipManagePage");
           break;
+        case "个人资料":
+          this.$router.push("/personalData");
+          break;
+        case "修改个人资料":
+          this.$router.push("/updatePersonal");
+          break;
+        case "修改个人密码":
+          this.$router.push("/updatePassword");
+        break;
       }
     },
     removeTab(targetName) {

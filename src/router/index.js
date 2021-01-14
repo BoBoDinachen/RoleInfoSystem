@@ -11,6 +11,12 @@ import Error from "../views/Error"
 // 装备管理和式神管理
 import RoleManage from "../views/RoleManage"
 import EquipManage from "../views/EquipManage"
+// 用户资料
+import PersonalData from "../views/PersonalData"
+// 修改个人资料
+import UpdatePersonal from "../views/UpdatePersonal"
+// 修改密码
+import UpdatePassword from "../views/UpdatePassword"
 Vue.use(VueRouter);
 
 // 重写了原型上的push方法，统一的处理了错误信息,避免重复跳转路由
@@ -44,6 +50,17 @@ const routes = [
   {
     path: "/equipManagePage",
     component: EquipManage
+  },
+  {
+    path: "/personalData",
+    component: PersonalData
+  },
+  {
+    path: "/updatePersonal",
+    component: UpdatePersonal
+  }, {
+    path: "/updatePassword",
+    component: UpdatePassword
   }
 ];
 

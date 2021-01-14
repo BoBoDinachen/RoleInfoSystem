@@ -3,19 +3,36 @@ import { axiosGet, axiosPost } from "../utils/request.js";
 
 // 关于用户的
 export const UserAPI = {
+  // 用户头像的baseURL
+  HeadURL: "http://localhost:9090/user",
   // 登录请求
   login: function (params) {
-    let request = axiosPost("/user/login",params)
+    let request = axiosPost("/user/login", params);
+    return request;
+  },
+  // 按id查找用户信息
+  findUserByID(id) { 
+    let request = axiosGet("/user/findUserById/" + id);
     return request;
   },
   // 注册请求
   register: function (params) { 
-    let request = axiosPost("/user/register", params)
+    let request = axiosPost("/user/register", params);
     return request;
   },
   // 注册信息查重
   checkRepeat: function (params) { 
-    let request = axiosPost("/user/checkRepeat", params)
+    let request = axiosPost("/user/checkRepeat", params);
+    return request;
+  },
+  // 修改用户信息
+  updateUserInfo(params) { 
+    let request = axiosPost("/user/updateUserInfo", params);
+    return request;
+  },
+  // 修改用户密码
+  updateUserPass(params) { 
+    let request = axiosPost("/user/setPassWord", params);
     return request;
   }
 }

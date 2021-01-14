@@ -71,8 +71,8 @@
             {{ isLogin ? username : "未登录" }}
           </div>
           <ul class="popover-card">
-            <li>个人资料</li>
-            <li>设置</li>
+            <li @click="goToPersonal">个人资料</li>
+            <li @click="goToSetPersonal">设置</li>
           </ul>
           <el-button
             v-show="!isLogin"
@@ -465,9 +465,28 @@ export default {
     };
   },
   // 计算属性
-  computed: {},
+  computed: {
+    showHead(){
+      return this.$store.getters.getShowHead;
+    },
+    isLogin2: {
+      // getter
+      get: function(){
+        return this.$store.getters.getIsLogin;
+      },
+      // setter
+      set: function(newVlue){
+
+      }
+    }
+  },
   // 监听数据的变化
   watch: {
+    // 是否改变头像
+    showHead(newValue,oldValue){
+      console.log("变化"+newValue);
+      this.squareUrl = UserAPI.HeadURL+"/getUserHead/"+JSON.parse(localStorage["userInfo"]).id+ '?' + '/' + Math.random() * 100000;
+    },
     // 改变黑夜模式
     isNight(newValue,oldValue){
       // console.log("改变");
@@ -476,8 +495,13 @@ export default {
     squareUrl(newValue, oldValue) {
       this.squareUrl = newValue;
     },
-    isLogin(newValue, oldValue) {
+    isLogin2(newValue, oldValue) {
       this.isLogin = newValue;
+      console.log("isLogin "+newValue);
+      if (newValue == false) {
+        this.squareUrl = require("../assets/top/head.png");
+        this.userName = "未登录"
+      }
     },
     dialogFormVisible(newValue, oldValue) {
       // 重新设置验证码
@@ -488,16 +512,31 @@ export default {
   },
   // 初始化
   created() {
+    // 检查登录状态
     // 检查本地是否存在用户信息和token
     let userToken = localStorage["userToken"];
     let userInfo = localStorage["userInfo"];
     if (userToken && userInfo) {
       this.isLogin = true;
-      this.squareUrl = require("../assets/top/user.png");
+      this.squareUrl = UserAPI.HeadURL+"/getUserHead/"+JSON.parse(userInfo).id+ '?' + '/' + Math.random() * 100000;
       this.username = JSON.parse(userInfo).userName;
     }
   },
   methods: {
+    // 跳转到个人资料页面
+    goToPersonal(){
+      // 隐藏标签页
+      this.$store.commit("changeHideTabs");
+      window.localStorage.removeItem("tabsInfo");
+      this.$router.push("/personalData");
+    },
+    // 跳转到个人资料修改界面
+    goToSetPersonal(){
+      // 隐藏标签页
+      this.$store.commit("changeHideTabs");
+      window.localStorage.removeItem("tabsInfo");
+      this.$router.push("/updatePersonal");
+    },
     handleSelect(key, keyPath) {
       console.log(key);
     },
@@ -550,6 +589,8 @@ export default {
                 this.isLogin = true;
                 this.isLoading = false;
                 this.dialogFormVisible = false; // 隐藏登录框
+                // 改变state状态
+                this.$store.commit('changeIsLogin');
               } else {
                 this.$message({
                   message: "登录失败,请检查用户名和密码是否正确",
@@ -596,10 +637,13 @@ export default {
           this.squareUrl = require("../assets/top/head.png");
           // console.log(this.isLogin);
           localStorage.clear(); // 清除本地localStorage
+          // 改变state状态
+          this.$store.commit('changeIsLogin');
           this.$message({
             type: "info",
             message: "已退出登录",
           });
+          this.$router.push("/");
         })
         .catch(() => {
           this.$message({
@@ -637,6 +681,7 @@ export default {
             })
             .catch((err) => {
               console.log(err);
+              this.isLoading = false;
             });
         } else {
           // 验证失败,通知
@@ -732,7 +777,7 @@ export default {
   line-height: 60px;
   border-radius: 30px;
   font-weight: bold;
-  transform: translateX(40%);
+  transform: translateX(10%);
   cursor: pointer;
 }
 .userlogin {

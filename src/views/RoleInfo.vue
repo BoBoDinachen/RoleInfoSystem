@@ -61,7 +61,7 @@
           class="role_card"
           :body-style="{ padding: '0px' }"
         >
-          <img src="..\assets\images\role3.png" class="image" />
+          <img :src="headURL+role.id" class="image" />
           <div style="padding: 14px">
             <span style="font-weight: bold">{{ role.name }}</span>
             <!-- 式神信息 -->
@@ -89,6 +89,10 @@ import { RoleAPI } from "../api/api";
 export default {
   data() {
     return {
+      // 式神头像公共路径
+      headURL: RoleAPI.ImgURL + "role/getRolePortrait/",
+      // 式神图片
+      pictureURL: RoleAPI.ImgURL + "role/getRolePicture/",
       images: [
         require("../assets/images/img1.jpg"),
         require("../assets/images/img2.jpg"),

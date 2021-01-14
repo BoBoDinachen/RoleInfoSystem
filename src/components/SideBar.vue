@@ -55,15 +55,15 @@
         </template>
         <el-menu-item-group>
           <template slot="title">个人</template>
-          <el-menu-item index="3-1">
+          <el-menu-item index="/personalData">
             <i class="el-icon-full-screen"></i>
             <span style="font-size: 13px; color: #67c23a">个人资料</span>
           </el-menu-item>
-          <el-menu-item index="3-2">
+          <el-menu-item index="/updatePersonal">
             <i class="el-icon-full-screen"></i>
             <span style="font-size: 13px; color: #67c23a">修改资料</span>
           </el-menu-item>
-          <el-menu-item index="3-3">
+          <el-menu-item index="/updatePassword">
             <i class="el-icon-full-screen"></i>
             <span style="font-size: 13px; color: #67c23a">密码修改</span>
           </el-menu-item>
@@ -180,6 +180,27 @@ export default {
             label: "装备信息管理"
           }
           this.addTabs(data4);
+          break;
+        case "/personalData":
+          let data5 = {
+            title: "<i class='el-icon-present'></i> 个人资料",
+            label: "个人资料"
+          }
+          this.addTabs(data5);
+          break;
+        case "/updatePersonal":
+          let data6 = {
+            title: "<i class='el-icon-present'></i> 修改个人资料",
+            label: "修改个人资料"
+          }
+          this.addTabs(data6);
+          break;
+        case "/updatePassword":
+          let data7 = {
+            title: "<i class='el-icon-present'></i> 修改个人密码",
+            label: "修改个人密码"
+          }
+          this.addTabs(data7);
           break;
 
       }

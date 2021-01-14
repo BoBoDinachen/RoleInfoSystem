@@ -8,6 +8,8 @@ export default new Vuex.Store({
     hideTabs: false, // 隐藏标签页
     showTabs: false, // 显示标签页
     makeDark: false, // 改变暗夜模式
+    isLogin: false, // 是否登录
+    ShowHead: false, // 改变头像
   },
   getters: {
     // 获得状态
@@ -19,6 +21,12 @@ export default new Vuex.Store({
     },
     getMakeDark: (state) => {
       return state.makeDark;
+    },
+    getIsLogin: (state) => { 
+      return state.isLogin;
+    },
+    getShowHead: (state) => { 
+      return state.ShowHead;
     }
   },
   mutations: {
@@ -33,6 +41,14 @@ export default new Vuex.Store({
     // 暗夜模式
     changeMakeDark(state) {
       state.makeDark = !state.makeDark;
+    },
+    // 改变是否登录
+    changeIsLogin(state) { 
+      state.isLogin = !state.isLogin;
+    },
+    // 改变头像
+    changeShowHead(state) { 
+      state.ShowHead = !state.ShowHead;
     }
   },
   actions: {

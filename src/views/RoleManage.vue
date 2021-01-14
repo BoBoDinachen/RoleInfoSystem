@@ -465,7 +465,7 @@ export default {
       callback();
     };
     return {
-      isLogin: true,
+      isLogin: false,
       isLoading: false, // 按钮加载
       // 式神头像公共路径
       headURL: RoleAPI.ImgURL + "role/getRolePortrait/",
@@ -532,6 +532,16 @@ export default {
         // },
       ],
     };
+  },
+  computed:{
+    getIsLogin(){
+      return this.$store.getters.getIsLogin;
+    }
+  },
+  watch:{
+    getIsLogin(newValue,oldValue){
+      this.isLogin = !this.isLogin;
+    }
   },
   created() {
     // 判断是否登录
@@ -714,7 +724,8 @@ export default {
               // 如果修改成功，隐藏弹出框，并提示,改变按钮加载，清除文件列表
               this.isLoading = false; //按钮不加载
               this.editDialogVisible = false;
-              
+              this.portrait = [];
+              this.picture = [];
               this.$message({
                 message: "修改成功!",
                 type: "success",
